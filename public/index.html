@@ -1,92 +1,167 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Project Trinity Hub</title>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>Scramjet Hub</title>
 
-  <!-- DO NOT REMOVE SCRAMJET SCRIPTS -->
-  <script src="/scramjet/scramjet.all.js"></script>
-  <script src="/baremux/index.js"></script>
-  <script src="/epoxy/transport.js"></script>
+    <link rel="shortcut icon" content="favicon.webp" />
 
-  <style>
-    body {
-      margin: 0;
-      background: #0a0a0a;
-      font-family: "Poppins", sans-serif;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-    }
+    <!-- Your existing CSS -->
+    <link rel="stylesheet" href="index.css" />
 
-    /* search bar */
-    .search-container {
-      width: 90%;
-      max-width: 500px;
-    }
+    <!-- Scramjet core – DO NOT TOUCH -->
+    <script src="/scram/scramjet.all.js"></script>
+    <script src="baremux/index.js" defer></script>
+    <script src="epoxy/index.js" defer></script>
+    <script src="register-sw.js" defer></script>
+    <script src="search.js" defer></script>
+    <script src="index.js" defer></script>
 
-    input {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      background: #111;
-      color: #fff;
-    }
+    <!-- Minimal inline styling for layout -->
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #050814;
+        color: #f9fafb;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
 
-    /* nav buttons */
-    .nav {
-      display: flex;
-      gap: 15px;
-    }
+      .hub {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+      }
 
-    .nav button {
-      background: #111;
-      border: 1px solid #333;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 15px;
-      color: white;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+      .hub-title {
+        text-align: center;
+        margin-bottom: 24px;
+        font-size: 20px;
+        font-weight: 600;
+      }
 
-    .nav button:hover {
-      transform: scale(1.08);
-      background: #222;
-    }
-  </style>
-</head>
+      /* search bar */
+      #sj-form {
+        display: flex;
+        justify-content: center;
+      }
 
-<body>
+      #sj-address {
+        width: 100%;
+        max-width: 600px;
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        background: #0b1020;
+        color: #f9fafb;
+      }
 
-  <!-- search bar -->
-  <div class="search-container">
-    <input id="search" placeholder="Search the web..." onkeydown="if(event.key==='Enter') goSearch();" />
-  </div>
+      #sj-address::placeholder {
+        color: #6b7280;
+      }
 
-  <!-- nav -->
-  <div class="nav">
-    <button onclick="location.href='/games'">Games</button>
-    <button onclick="location.href='/'">Proxy</button>
-    <button onclick="location.href='/chat'">Chat</button>
-    <button onclick="location.href='/settings'">Settings</button>
-  </div>
+      /* nav row */
+      .hub-nav {
+        margin-top: 18px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
 
-  <script>
-    function goSearch() {
-      const q = document.getElementById("search").value.trim();
-      if (!q) return;
-      location.href = "/scramjet/https://" + q.replace("https://", "").replace("http://", "");
-    }
-  </script>
+      .hub-nav button {
+        border: 1px solid #1f2933;
+        background: #0b1020;
+        color: #f9fafb;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease;
+      }
 
-</body>
+      .hub-nav button:hover {
+        transform: scale(1.05);
+        background: #111827;
+      }
+
+      /* error area – keep for Scramjet */
+      .error-wrap {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #f97373;
+        white-space: pre-wrap;
+      }
+
+      footer {
+        margin-top: 32px;
+        font-size: 11px;
+        opacity: 0.5;
+        text-align: center;
+      }
+
+      footer a {
+        color: #9ca3af;
+        text-decoration: none;
+        margin: 0 4px;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="hub">
+      <!-- Tiny title, no big logo / description -->
+      <div class="hub-title">Scramjet Gaming Hub</div>
+
+      <!-- SEARCH BAR (must keep IDs for search.js) -->
+      <form id="sj-form">
+        <input
+          id="sj-search-engine"
+          value="https://www.google.com/search?q=%s"
+          type="hidden"
+        />
+        <input
+          id="sj-address"
+          type="text"
+          placeholder="Search the web freely..."
+        />
+      </form>
+
+      <!-- SIMPLE NAVBAR -->
+      <div class="hub-nav">
+        <button type="button" onclick="location.href='/games'">Games</button>
+        <button type="button" onclick="location.href='/'">Proxy</button>
+        <button type="button" onclick="location.href='/chat'">Chat</button>
+        <button type="button" onclick="location.href='/settings'">Settings</button>
+      </div>
+
+      <!-- ERROR OUTPUT (keep these IDs – used by scripts) -->
+      <div class="error-wrap">
+        <p id="sj-error"></p>
+        <pre id="sj-error-code"></pre>
+      </div>
+
+      <!-- Small footer (optional, can delete if you want) -->
+      <footer>
+        <div>
+          <span>Scramjet &copy; MW 2025</span>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>
