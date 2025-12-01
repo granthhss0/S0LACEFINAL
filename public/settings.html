@@ -322,7 +322,7 @@
         <div class="settings-row">
           <label for="cloak-preset">Preset</label>
           <select id="cloak-preset">
-            <option value="default">Scramjet (default)</option>
+            <option value="default">S0LACE (default)</option>
             <option value="gdocs">Google Docs</option>
             <option value="gclass">Google Classroom</option>
             <option value="gdrive">Google Drive</option>
@@ -356,16 +356,12 @@
         </div>
 
         <div class="settings-footer-note">
-          This only affects this hub. Other pages have to include the same logic if you want global cloaking.
-        </div>
       </div>
 
       <!-- THEME -->
       <div class="settings-group">
         <div class="settings-title">Appearance</div>
         <div class="settings-help">
-          Light or dark mode. Stored per browser. Other hub pages can read the same setting if they look at
-          <code>localStorage.sjTheme</code>.
         </div>
 
         <div class="settings-row" style="justify-content: space-between;">
@@ -383,9 +379,9 @@
 
       const TAB_PRESETS = {
         default: {
-          label: "Scramjet (default)",
-          title: "Scramjet Hub",
-          favicon: "favicon.webp",
+          label: "S0LACE (default)",
+          title: "S0LACE",
+          favicon: "favicon.ico",
         },
         gdocs: {
           label: "Google Docs",
@@ -402,7 +398,7 @@
           label: "Google Drive",
           title: "My Drive - Google Drive",
           favicon:
-            "https://ssl.gstatic.com/docs/doclist/images/drive_16.png",
+            "https://ssl.gstatic.com/docs/doclist/images/drive_icon_16.png",
         },
         khan: {
           label: "Khan Academy",
