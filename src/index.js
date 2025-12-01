@@ -5,11 +5,6 @@ import { server as wisp, logging } from "@mercuryworkshop/wisp-js/server";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
-// --- THIS IS THE FINAL FIX ---
-// Changed the previous two-line import to this single line:
-import createBareServer from '@mercuryworkshop/bare-mux/node';
-// --- END OF FIX ---
-
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
@@ -20,9 +15,9 @@ const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
 
 logging.set_level(logging.NONE);
 Object.assign(wisp.options, {
-  allow_udp_streams: false,
-  hostname_blacklist: [/example\.com/],
-  dns_servers: ["1.1.1.3", "1.0.0.3"]
+  allow_udp_streams: false,
+  hostname_blacklist: [/example\.com/],
+  dns_servers: ["1.1.1.3", "1.0.0.3"]
 });
 
 const fastify = Fastify({
@@ -33,22 +28,12 @@ const fastify = Fastify({
 				res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
 				handler(req, res);
 			})
-            // UPDATED: Added Bare-Mux to the upgrade handler
 			.on("upgrade", (req, socket, head) => {
-				if (req.url.endsWith("/wisp/")) {
-                    wisp.routeRequest(req, socket, head);
-                } else if (req.url.startsWith("/baremux/")) {
-                    bare.routeUpgrade(req, socket, head);
-                } else {
-                    socket.end();
-                }
+				if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
+				else socket.end();
 			});
 	},
 });
-
-// NEW: Create the Bare-Mux server instance
-// This line (52) will now work because the import is correct.
-const bare = createBareServer("/baremux/");
 
 fastify.register(fastifyStatic, {
 	root: publicPath,
@@ -56,9 +41,9 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.register(fastifyStatic, {
-  root: scramjetPath,
-  prefix: "/scram/",
-  decorateReply: false,
+  root: scramjetPath,
+  prefix: "/scram/",
+  decorateReply: false,
 });
 
 fastify.register(fastifyStatic, {
@@ -71,15 +56,6 @@ fastify.register(fastifyStatic, {
 	root: baremuxPath,
 	prefix: "/baremux/",
 	decorateReply: false,
-});
-
-// NEW: Route all HTTP requests to the Bare-Mux proxy
-fastify.route({
-  method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  url: "/baremux/*",
-  handler: (request, reply) => {
-    bare.routeRequest(request.raw, reply.raw);
-  }
 });
 
 fastify.setNotFoundHandler((res, reply) => {
