@@ -5,11 +5,9 @@ import { server as wisp, logging } from "@mercuryworkshop/wisp-js/server";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
-// --- THIS IS THE FIX ---
-// The old line was: import { createBareServer } from "@mercuryworkshop/bare-mux/node";
-// The error log told us to do this instead:
-import pkg from '@mercuryworkshop/bare-mux/node';
-const { createBareServer } = pkg;
+// --- THIS IS THE FINAL FIX ---
+// Changed the previous two-line import to this single line:
+import createBareServer from '@mercuryworkshop/bare-mux/node';
 // --- END OF FIX ---
 
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
@@ -49,6 +47,7 @@ const fastify = Fastify({
 });
 
 // NEW: Create the Bare-Mux server instance
+// This line (52) will now work because the import is correct.
 const bare = createBareServer("/baremux/");
 
 fastify.register(fastifyStatic, {
