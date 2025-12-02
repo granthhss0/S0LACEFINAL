@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href = "https://cdn.jsdelivr.net/gh/Pok12d/ta@main/policepursuit2/">
+    <meta charset="UTF-8">
+
+
+<script>function UnityProgress(gameInstance, progress) {
+  if (!gameInstance.Module)
+    return;
+  if (!gameInstance.progress) {    
+    gameInstance.progress = document.createElement("div");
+    gameInstance.progress.className = "progress";
+    
+    gameInstance.progress.background = document.createElement("div");
+    gameInstance.progress.background.className = "background";
+    gameInstance.progress.appendChild(gameInstance.progress.background);
+
+    gameInstance.progress.full = document.createElement("div");
+    gameInstance.progress.full.className = "full";
+    gameInstance.progress.appendChild(gameInstance.progress.full);
+    
+	gameInstance.progress.empty = document.createElement("div");
+    gameInstance.progress.empty.className = "empty";
+    gameInstance.progress.appendChild(gameInstance.progress.empty);
+	
+	gameInstance.container.appendChild(gameInstance.progress);
+	
+  }
+  gameInstance.progress.full.style.width = (100 * progress) + "%";
+  //gameInstance.progress.empty.style.width = (100 * (1 - progress)) + "%";
+  if (progress == 1)
+    gameInstance.progress.style.display = "none";
+}</script>
+
+
+
+ <script src="pako.js"></script>
